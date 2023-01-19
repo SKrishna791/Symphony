@@ -1,7 +1,7 @@
 <?php
 	
 	ob_start(); //output buffering, when a php page loads, data is sent in pieces to the server. So it wait till it recieves all the data to the server 
-
+	session_start();
 	$timezone = date_default_timezone_set("America/Toronto");
 
 	$con =mysqli_connect("localhost","root","Sabari@1947","symphony");

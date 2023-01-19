@@ -12,6 +12,24 @@
 
 		}
 
+		public function login($un,$pw){
+
+			$pw=md5($pw);
+
+			$query = mysqli_query($this->con,"SELECT * FROM users WHERE username='$un' AND password='$pw'");
+
+			if(mysqli_num_rows($query)==1){
+				return true;
+			}
+			else{
+				array_push($this->errorArray,Constants::$loginFail);
+				return false;
+			}
+		}
+
+
+
+
 		public function register($un, $fn, $ln, $em, $pw, $pw1){
 
 				$this->validateUsername($un);
@@ -21,7 +39,7 @@
     			$this->validatePasswords($pw,$pw1);
 
     			if(empty($this->errorArray)){
-    				return insertUserDetails($un, $fn, $ln, $em, $pw);
+    				return $this->insertUserDetails($un, $fn, $ln, $em, $pw);
     				//Insert into db
     			}
 
@@ -45,7 +63,10 @@
 			$profilePic="assets/images/profile-pics/head-emerald.png";
 			$date=date("Y-m-d");
 
-			$result=mysqli_query(this->con,"INSERT INTO users VALUES('','$un','$fn','$ln','$em','$encryptedPW','$date','profilePic')");
+			echo "INSERT INTO users VALUES ('','$un','$fn','$ln','$em','$encryptedPW','$date','$profilePic')";
+
+
+			$result=mysqli_query($this->con,"INSERT INTO users(username, firstName, lastName, email, password, signUpDate, profilePic) VALUES ('$un','$fn','$ln','$em','$encryptedPW','$date','$profilePic')");
 			return $result;
 		}
 
@@ -62,6 +83,13 @@
 
 			}
 
+			$checkUsernameQuery= mysqli_query($this->con,"SELECT username from users WHERE username='$un'");
+
+			if(mysqli_num_rows($checkUsernameQuery)!=0){
+				array_push($this->errorArray,Constants::$usernameTaken);
+				return;
+
+			}
 			//TODO check if username already exist
 
 		}
@@ -95,7 +123,14 @@
 				array_push($this->errorArray,Constants::$EmailInvalid); //checks for .com part regardless of email form
 					return;
 			}
-    		
+
+    		$checkEmailQuery= mysqli_query($this->con,"SELECT email from users WHERE email='$em'");
+
+			if(mysqli_num_rows($checkEmailQuery)!=0){
+				array_push($this->errorArray,Constants::$emailTaken);
+				return;
+
+			}
     		//TODO: Username already exist
 		}
 

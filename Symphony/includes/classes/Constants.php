@@ -10,6 +10,12 @@ class Constants {
 	public static $LastNameCharacters = "Last Name is too long or too short"; 
 	public static $FirstNameCharacters = "Firstname is too long or too short"; 
 	public static $UsernameCharacters = "Username is too long or too short"; 
+	public static $usernameTaken = "This username is already taken"; 
+
+	public static $emailTaken = "This Email already exists";
+
+
+	public static $loginFail = "Your Username or password was incorrect";
 
 }
 

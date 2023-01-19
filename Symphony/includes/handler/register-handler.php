@@ -39,11 +39,13 @@ if(isset($_POST['RegisterButton'])){
     $Cpassword = sanitizeFormString($_POST['ConfirmPassword']);
 
 
-    $wasSuccessfull=$account->register($username,$firstname,$lastname,$email,$password,$Cpassword);
+    $wasSuccessfull= $account->register($username,$firstname,$lastname,$email,$password,$Cpassword);
    
     if($wasSuccessfull){
-        headed("Location: index.php");
+        $_SESSION['userLoggedIn'] = $username;
+        header("Location: index.php");
     }
+   
 
 
 
